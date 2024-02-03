@@ -1,20 +1,22 @@
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Task1 {
     static class Solution {
-        public List<List<Integer>> generate(int numRows) {
-            List<List<Integer>> result = new ArrayList<>();
-
-            if (numRows == 1) {
-                return List.of(List.of(1));
+        public List<Integer> getRow(int rowIndex) {
+            rowIndex += 1;
+            if (rowIndex == 0) {
+                return Collections.emptyList();
+            }
+            if (rowIndex == 1) {
+                return List.of(1);
             }
 
             Integer[] prevRow = null;
             Integer[] currentRow = null;
 
-            for (int i = 0; i < numRows; ++i) {
+            for (int i = 0; i < rowIndex; ++i) {
                 currentRow = new Integer[i + 1];
                 currentRow[0] = 1;
                 currentRow[i] = 1;
@@ -24,19 +26,17 @@ public class Task1 {
                 }
 
                 prevRow = currentRow;
-
-                result.add(Arrays.asList(currentRow));
             }
 
-            return result;
+            return Arrays.asList(currentRow);
         }
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
 
-        System.out.println(solution.generate(3));
-        System.out.println(solution.generate(5));
+        System.out.println(solution.getRow(3));
+        System.out.println(solution.getRow(5));
 //
 //        long start = System.currentTimeMillis();
 //        System.out.println(solution.generate(1000));
