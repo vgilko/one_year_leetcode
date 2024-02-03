@@ -1,9 +1,9 @@
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Task1 {
     static class Solution {
@@ -24,37 +24,23 @@ public class Task1 {
 
             if (numRows == 1) {
                 return List.of(List.of(1));
-            } else if (numRows == 2) {
-                return List.of(
-                        List.of(1),
-                        List.of(1, 1));
             }
 
-            HashMap<Pair, Integer> memo = new HashMap<>();
+            List<Integer> prevRow = null;
+            List<Integer> currentRow;
 
-            for (int rowIndex = 0; rowIndex < numRows; ++rowIndex) {
-                Integer[] integers = new Integer[rowIndex + 1];
+            for (int i = 0; i < numRows; ++i) {
+                currentRow = Stream.generate(() -> 1)
+                        .limit(i + 1)
+                        .collect(Collectors.toList());
 
-                integers[0] = 1;
-                integers[rowIndex] = 1;
-
-                for (int columnIndex = 1; columnIndex < rowIndex; ++columnIndex) {
-                    int secondIndex = columnIndex > rowIndex / 2
-                            ? rowIndex - columnIndex
-                            : columnIndex;
-                    Pair pair = new Pair(rowIndex - 1, secondIndex);
-
-                    Integer sum = memo.get(pair);
-                    if (sum == null) {
-                        List<Integer> prevRow = result.get(rowIndex - 1);
-                        sum = prevRow.get(columnIndex - 1) + prevRow.get(columnIndex);
-                        memo.put(pair, sum);
-                    }
-
-                    integers[columnIndex] = sum;
+                for (int j = 1; j < i; ++j) {
+                    currentRow.set(j, prevRow.get(j - 1) + prevRow.get(j));
                 }
 
-                result.add(Arrays.asList(integers));
+                prevRow = currentRow;
+
+                result.add(currentRow);
             }
 
             return result;
@@ -66,6 +52,11 @@ public class Task1 {
 
         System.out.println(solution.generate(3));
         System.out.println(solution.generate(5));
-        System.out.println(solution.generate(30));
+
+        long start = System.currentTimeMillis();
+        System.out.println(solution.generate(1000));
+        long end = System.currentTimeMillis();
+
+        System.out.println("End in: " + ((end - start) / 1000.0) + " ms");
     }
 }
