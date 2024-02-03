@@ -1,34 +1,21 @@
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Task1 {
     static class Solution {
         public List<Integer> getRow(int rowIndex) {
-            rowIndex += 1;
-            if (rowIndex == 0) {
-                return Collections.emptyList();
-            }
-            if (rowIndex == 1) {
-                return List.of(1);
-            }
+            Integer[] row = new Integer[rowIndex + 1];
 
-            Integer[] prevRow = null;
-            Integer[] currentRow = null;
+            Arrays.fill(row, 0);
+            row[0] = 1;
 
-            for (int i = 0; i < rowIndex; ++i) {
-                currentRow = new Integer[i + 1];
-                currentRow[0] = 1;
-                currentRow[i] = 1;
-
-                for (int j = 1; j < i; ++j) {
-                    currentRow[j] = prevRow[j - 1] + prevRow[j];
+            for (int i = 1; i < rowIndex + 1; ++i) {
+                for (int j = i; j >= 1; --j) {
+                    row[j] += row[j - 1];
                 }
-
-                prevRow = currentRow;
             }
 
-            return Arrays.asList(currentRow);
+            return Arrays.asList(row);
         }
     }
 
