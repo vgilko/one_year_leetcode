@@ -5,32 +5,24 @@ public class Task1 {
                 return 0;
             }
 
-            int maxPrice = 0;
+            int minPrice = Integer.MAX_VALUE;
+            int profit = 0;
 
+            int currentPrice;
             for (int i = 0; i < prices.length; ++i) {
-                for (int j = i; j < prices.length; ++j) {
-                    int difference = prices[j] - prices[i];
-                    if (difference > maxPrice) {
-                        maxPrice = difference;
-                    }
-                }
+                currentPrice = prices[i];
+                minPrice = Math.min(minPrice, currentPrice);
+                profit = Math.max(profit, currentPrice - minPrice);
             }
 
-            return maxPrice;
+            return profit;
         }
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
 
-//        System.out.println(solution.maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
+        System.out.println(solution.maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
         System.out.println(solution.maxProfit(new int[]{7, 6, 4, 3, 1}));
-//        System.out.println(solution.getRow(5));
-//
-//        long start = System.currentTimeMillis();
-//        System.out.println(solution.generate(1000));
-//        long end = System.currentTimeMillis();
-//
-//        System.out.println("End in: " + ((end - start) / 1000.0) + " ms");
     }
 }
