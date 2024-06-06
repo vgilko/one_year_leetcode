@@ -1,28 +1,44 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 public class Task1 {
     static class Solution {
-        public int maxProfit(int[] prices) {
-            if (prices.length < 2) {
-                return 0;
+        public List<String> commonChars(String[] words) {
+            ArrayList<String> result = new ArrayList<>();
+            int[] minFreq = new int[26];
+
+            Arrays.fill(minFreq, Integer.MAX_VALUE);
+
+            for (String word : words) {
+                int[] freq = new int[26];
+
+                for (char c : word.toCharArray()) {
+                    freq[c - 'a']++;
+                }
+
+
+                for (int i = 0; i < minFreq.length; ++i) {
+                    minFreq[i] = Math.min(minFreq[i], freq[i]);
+                }
             }
 
-            int minPrice = Integer.MAX_VALUE;
-            int profit = 0;
-
-            int currentPrice;
-            for (int i = 0; i < prices.length; ++i) {
-                currentPrice = prices[i];
-                minPrice = Math.min(minPrice, currentPrice);
-                profit = Math.max(profit, currentPrice - minPrice);
+            for (int i = 0; i < minFreq.length; ++i) {
+                while (minFreq[i] > 0) {
+                    --minFreq[i];
+                    result.add(String.valueOf((char) (i + 'a')));
+                }
             }
 
-            return profit;
+            return result;
         }
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
 
-        System.out.println(solution.maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
-        System.out.println(solution.maxProfit(new int[]{7, 6, 4, 3, 1}));
+        System.out.println(solution.commonChars(new String[]{"bella", "label", "roller"}));
+        System.out.println(solution.commonChars(new String[]{"cool", "lock", "cook"}));
     }
 }
