@@ -1,44 +1,65 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Task1 {
     static class Solution {
-        public List<String> commonChars(String[] words) {
-            ArrayList<String> result = new ArrayList<>();
-            int[] minFreq = new int[26];
+        public long maximumImportance(int n, int[][] roads) {
+            List<Map.Entry<Integer, Long>> collect = Stream.of(roads)
+                    .flatMapToInt(IntStream::of)
+                    .boxed()
+                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                    .entrySet()
+                    .stream()
+                    .sorted(Map.Entry.comparingByValue())
+                    .collect(Collectors.toList());
 
-            Arrays.fill(minFreq, Integer.MAX_VALUE);
-
-            for (String word : words) {
-                int[] freq = new int[26];
-
-                for (char c : word.toCharArray()) {
-                    freq[c - 'a']++;
-                }
-
-
-                for (int i = 0; i < minFreq.length; ++i) {
-                    minFreq[i] = Math.min(minFreq[i], freq[i]);
-                }
-            }
-
-            for (int i = 0; i < minFreq.length; ++i) {
-                while (minFreq[i] > 0) {
-                    --minFreq[i];
-                    result.add(String.valueOf((char) (i + 'a')));
-                }
+            long result = 0;
+            for (int i = collect.size() - 1; i >= 0; --i) {
+                result += collect.get(i).getValue() * n;
+                --n;
             }
 
             return result;
         }
     }
 
-    public static void main(String[] args) {
-        Solution solution = new Solution();
+    @Test
+    void test() {
+        int[][] roads = new int[][]{
+                new int[]{0, 1},
+                new int[]{1, 2},
+                new int[]{2, 3},
+                new int[]{0, 2},
+                new int[]{1, 3},
+                new int[]{2, 4}
+        };
+        int n = 5;
 
-        System.out.println(solution.commonChars(new String[]{"bella", "label", "roller"}));
-        System.out.println(solution.commonChars(new String[]{"cool", "lock", "cook"}));
+        long result = new Solution().maximumImportance(n, roads);
+        assertEquals(43, result);
+    }
+
+    @Test
+    void test1() {
+        int[][] roads = new int[][]{
+                new int[]{0, 1}
+        };
+        int n = 5;
+
+        long result = new Solution().maximumImportance(n, roads);
+        assertEquals(9, result);
+    }
+
+
+    public static void main(String[] args) {
+
     }
 }
