@@ -1,33 +1,27 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Task1 {
     static class Solution {
         public long maximumImportance(int n, int[][] roads) {
-            List<Map.Entry<Integer, Long>> collect = Stream.of(roads)
-                    .flatMapToInt(IntStream::of)
-                    .boxed()
-                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                    .entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue())
-                    .collect(Collectors.toList());
+            int[] counter = new int[n];
 
-            long result = 0;
-            for (int i = collect.size() - 1; i >= 0; --i) {
-                result += collect.get(i).getValue() * n;
-                --n;
+            for (int k = 0; k < roads.length; ++k) {
+                counter[roads[k][0]] += 1;
+                counter[roads[k][1]] += 1;
             }
 
-            return result;
+            Arrays.sort(counter);
+
+            long result  = 0;
+            for (int j = counter.length - 1; j >= 0; --j) {
+                result += (long) (j + 1) * counter[j];
+            }
+
+
         }
     }
 
@@ -56,6 +50,19 @@ public class Task1 {
 
         long result = new Solution().maximumImportance(n, roads);
         assertEquals(9, result);
+    }
+
+    @Test
+    void test2() {
+        int[][] roads = new int[][]{
+                new int[]{0, 3},
+                new int[]{2, 4},
+                new int[]{1, 3},
+        };
+        int n = 5;
+
+        long result = new Solution().maximumImportance(n, roads);
+        assertEquals(20, result);
     }
 
 
