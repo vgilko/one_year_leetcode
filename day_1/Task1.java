@@ -1,20 +1,27 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Task1 {
     static
     class Solution {
         public int[] twoSum(int[] nums, int target) {
             int v1;
+            Map<Integer, Integer> values = new HashMap<>();
+
             for (int k = 0; k < nums.length; ++k) {
                 v1 = nums[k];
-                for (int m = k + 1; m < nums.length; ++m) {
-                    if (v1 + nums[m] == target) {
-                        return new int[]{k, m};
-                    }
+                int difference = target - v1;
+                Integer i = values.get(difference);
+                if (i != null) {
+                    return new int[]{i, k};
                 }
+
+                values.put(v1, k);
             }
+            
             return null;
         }
     }
