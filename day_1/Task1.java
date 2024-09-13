@@ -1,36 +1,34 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.Stack;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Task1 {
     static
     class Solution {
-        public boolean isValid(String s) {
-            Stack<Character> values = new Stack<>();
-
+        public boolean isPalindrome(String s) {
+            StringBuilder stringBuilder = new StringBuilder();
             for (char c : s.toCharArray()) {
-                if (c == '[' || c == '{') {
-                    values.push((char) (c + 2));
-                } else if (c == '(') {
-                    values.push(')');
-                } else {
-                    char c1 = values.isEmpty() ? '@' : values.pop();
-
-                    if (c1 != c) {
-                        return false;
-                    }
+                if (Character.isAlphabetic(c) || Character.isDigit(c)) {
+                    stringBuilder.append(c);
                 }
             }
 
-            return values.isEmpty();
+            String lowerCase = stringBuilder.toString().toLowerCase();
+
+            for (int i = 0, k = lowerCase.length() - 1; i <= k; ++i, --k) {
+                if (lowerCase.charAt(i) != lowerCase.charAt(k)) {
+                    return false;
+                }
+            }
+            
+            return true;
         }
     }
 
     @Test
     void test() {
-        assertTrue(new Solution().isValid("()"));
+        boolean palindrome = new Solution().isPalindrome("A man, a plan, a canal: Panama");
+        assertTrue(palindrome);
     }
 
     public static void main(String[] args) {
