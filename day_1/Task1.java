@@ -11,22 +11,16 @@ public class Task1 {
             Stack<Character> values = new Stack<>();
 
             for (char c : s.toCharArray()) {
-                if (c == '[' || c == '{' || c == '(') {
-                    values.push(c);
+                if (c == '[' || c == '{') {
+                    values.push((char) (c + 2));
+                } else if (c == '(') {
+                    values.push(')');
                 } else {
-                    if (values.isEmpty()) {
+                    char c1 = values.isEmpty() ? '@' : values.pop();
+
+                    if (c1 != c) {
                         return false;
                     }
-                    if ((c == ']' || c == '}')) {
-                        if ((c - values.peek()) != 2) {
-                            return false;
-                        }
-                    } else {
-                        if ((c - values.peek()) != 1) {
-                            return false;
-                        } 
-                    }
-                    values.pop();
                 }
             }
 
