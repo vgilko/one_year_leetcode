@@ -2,69 +2,29 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class Task1 {
-    static class Solution {
-        public long maximumImportance(int n, int[][] roads) {
-            int[] counter = new int[n];
-
-            for (int k = 0; k < roads.length; ++k) {
-                counter[roads[k][0]] += 1;
-                counter[roads[k][1]] += 1;
+    static
+    class Solution {
+        public int[] twoSum(int[] nums, int target) {
+            int v1;
+            for (int k = 0; k < nums.length; ++k) {
+                v1 = nums[k];
+                for (int m = k + 1; m < nums.length; ++m) {
+                    if (v1 + nums[m] == target) {
+                        return new int[]{k, m};
+                    }
+                }
             }
-
-            Arrays.sort(counter);
-
-            long result  = 0;
-            for (int j = counter.length - 1; j >= 0; --j) {
-                result += (long) (j + 1) * counter[j];
-            }
-
-
+            return null;
         }
     }
 
     @Test
     void test() {
-        int[][] roads = new int[][]{
-                new int[]{0, 1},
-                new int[]{1, 2},
-                new int[]{2, 3},
-                new int[]{0, 2},
-                new int[]{1, 3},
-                new int[]{2, 4}
-        };
-        int n = 5;
-
-        long result = new Solution().maximumImportance(n, roads);
-        assertEquals(43, result);
+        int[] ints = {2, 123, 7, 11, 15};
+        int[] ints1 = new Solution().twoSum(ints, 9);
+        System.out.println(Arrays.toString(ints1));
     }
-
-    @Test
-    void test1() {
-        int[][] roads = new int[][]{
-                new int[]{0, 1}
-        };
-        int n = 5;
-
-        long result = new Solution().maximumImportance(n, roads);
-        assertEquals(9, result);
-    }
-
-    @Test
-    void test2() {
-        int[][] roads = new int[][]{
-                new int[]{0, 3},
-                new int[]{2, 4},
-                new int[]{1, 3},
-        };
-        int n = 5;
-
-        long result = new Solution().maximumImportance(n, roads);
-        assertEquals(20, result);
-    }
-
 
     public static void main(String[] args) {
 
