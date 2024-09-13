@@ -1,36 +1,42 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Stack;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Task1 {
     static
     class Solution {
-        public int[] twoSum(int[] nums, int target) {
-            int v1;
-            Map<Integer, Integer> values = new HashMap<>();
+        public boolean isValid(String s) {
+            Stack<Character> values = new Stack<>();
 
-            for (int k = 0; k < nums.length; ++k) {
-                v1 = nums[k];
-                int difference = target - v1;
-                Integer i = values.get(difference);
-                if (i != null) {
-                    return new int[]{i, k};
+            for (char c : s.toCharArray()) {
+                if (c == '[' || c == '{' || c == '(') {
+                    values.push(c);
+                } else {
+                    if (values.isEmpty()) {
+                        return false;
+                    }
+                    if ((c == ']' || c == '}')) {
+                        if ((c - values.peek()) != 2) {
+                            return false;
+                        }
+                    } else {
+                        if ((c - values.peek()) != 1) {
+                            return false;
+                        } 
+                    }
+                    values.pop();
                 }
-
-                values.put(v1, k);
             }
-            
-            return null;
+
+            return values.isEmpty();
         }
     }
 
     @Test
     void test() {
-        int[] ints = {2, 123, 7, 11, 15};
-        int[] ints1 = new Solution().twoSum(ints, 9);
-        System.out.println(Arrays.toString(ints1));
+        assertTrue(new Solution().isValid("()"));
     }
 
     public static void main(String[] args) {
